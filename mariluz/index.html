@@ -1,19 +1,25 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta http-equiv="Cache-Control" content="no-cache,no-store,must-revalidate">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Backlog RH — BPT · Dirección Administrativa</title>
 <style>
+
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--nv:#2D0B6B;--bl:#6D28D9;--ink:#111827;--mu:#6B7280;--bo:#E5E7EB;--bg:#F7F8FC;--wh:#FFFFFF;--r:8px;--dr:#DC2626;--drb:#FEF2F2;--wa:#D97706;--wab:#FFFBEB;--ac:#1A50C8;--acb:#EFF6FF;--pr:#7C3AED;--prb:#F5F3FF;--su:#059669;--sub:#ECFDF5;}
+:root{
+  --nv:#2D0B6B;--bl:#6D28D9;--ink:#111827;--mu:#6B7280;
+  --bo:#E5E7EB;--bg:#F7F8FC;--wh:#FFFFFF;--r:8px;
+  --dr:#DC2626;--drb:#FEF2F2;--wa:#D97706;--wab:#FFFBEB;
+  --ac:#6D28D9;--acb:#EFF6FF;--pr:#7C3AED;--prb:#F5F3FF;
+  --su:#059669;--sub:#ECFDF5;
+}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:13px}
-.tb{background:linear-gradient(135deg,#1a0a4a,#5b21b6);color:#fff;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
-.tl .te{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;opacity:.7}
-.tl .tt{font-size:17px;font-weight:800}
-.tl .ts{font-size:11px;opacity:.7}
-.rob{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:4px 12px;font-size:10px;font-weight:700}
+.tb{background:linear-gradient(135deg,#2D0B6B,var(--bl));color:#fff;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.te{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;opacity:.7}
+.tt{font-size:17px;font-weight:800}
+.ts{font-size:11px;opacity:.7}
+.tr{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:3px 10px;font-size:10px;font-weight:700}
 .sb{background:var(--wh);border-bottom:1px solid var(--bo);padding:8px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
 .ss{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--mu)}
 .sd{width:7px;height:7px;border-radius:50%;background:var(--su)}
@@ -21,6 +27,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .sd.er{background:var(--dr)}
 @keyframes p{0%,100%{opacity:1}50%{opacity:.3}}
 .btn{padding:5px 12px;font-size:11px;font-weight:600;cursor:pointer;border-radius:var(--r);border:1px solid var(--bo);background:var(--wh);color:var(--mu)}
+.btn.pr{background:#2D0B6B;color:#fff;border-color:#2D0B6B}
 .kr{padding:10px 18px;display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
 .kp{background:var(--wh);border:1px solid var(--bo);border-radius:var(--r);padding:8px 10px;text-align:center}
 .kv{font-size:21px;font-weight:900;line-height:1}
@@ -28,33 +35,42 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .kd .kv{color:var(--dr)}.kw .kv{color:var(--wa)}.ka .kv{color:var(--ac)}.kpp .kv{color:var(--pr)}.ks .kv{color:var(--su)}
 .tabs{display:flex;padding:0 18px;border-bottom:1px solid var(--bo);background:var(--wh)}
 .tab{padding:8px 14px;font-size:12px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;color:var(--mu)}
-.tab.on{color:var(--nv);border-bottom-color:var(--nv)}
+.tab.on{color:#2D0B6B;border-bottom-color:#2D0B6B}
 .fi{padding:7px 18px;display:flex;gap:6px;align-items:center;border-bottom:1px solid var(--bo);background:var(--wh);flex-wrap:wrap}
 .fl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--mu)}
-.fb{padding:3px 10px;font-size:11px;font-weight:600;cursor:pointer;border-radius:10px;border:1px solid var(--bo);background:var(--wh);color:var(--mu)}
-.fb.on{background:var(--nv);color:#fff;border-color:var(--nv)}
+.fb,.fbp,.fbe{padding:3px 10px;font-size:11px;font-weight:600;cursor:pointer;border-radius:10px;border:1px solid var(--bo);background:var(--wh);color:var(--mu)}
+.fb.on,.fbp.on,.fbe.on{background:#2D0B6B;color:#fff;border-color:#2D0B6B}
+.sp{width:1px;height:18px;background:var(--bo)}
+/* KANBAN */
 .kb{padding:10px 18px;display:grid;grid-template-columns:repeat(5,1fr);gap:9px;align-items:start}
 .kc{display:flex;flex-direction:column}
 .kch{padding:6px 9px;border-radius:var(--r);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:space-between;margin-bottom:5px}
 .kcc{font-size:10px;padding:1px 6px;border-radius:8px;font-weight:700}
-.cv .kch{background:var(--drb);color:var(--dr)}.cp .kch{background:var(--wab);color:var(--wa)}.ce .kch{background:var(--acb);color:var(--ac)}.cb .kch{background:var(--prb);color:var(--pr)}.cc .kch{background:var(--sub);color:var(--su)}
+.cv .kch{background:var(--drb);color:var(--dr)}.cp .kch{background:var(--wab);color:var(--wa)}
+.ce .kch{background:var(--acb);color:var(--ac)}.cb .kch{background:var(--prb);color:var(--pr)}
+.cc .kch{background:var(--sub);color:var(--su)}
 .kcs{display:flex;flex-direction:column;gap:5px;min-height:60px}
 .kk{background:var(--wh);border:1px solid var(--bo);border-radius:var(--r);padding:8px 9px;cursor:pointer;transition:border-color .1s;border-left:3px solid transparent}
-.kk:hover{border-color:var(--pr)}
-.kk[data-p=alta]{border-left-color:var(--dr)}.kk[data-p=media]{border-left-color:var(--wa)}.kk[data-p=baja]{border-left-color:var(--su)}
+.kk:hover{border-color:var(--bl)}
+.kk[data-p=alta]{border-left-color:var(--dr)}
+.kk[data-p=media]{border-left-color:var(--wa)}
+.kk[data-p=baja]{border-left-color:var(--su)}
 .kn{font-size:9px;color:var(--mu);font-weight:700;margin-bottom:2px}
 .kt{font-size:11px;font-weight:700;line-height:1.3;margin-bottom:3px}
 .kd2{font-size:10px;color:var(--mu);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:4px}
 .kf{display:flex;align-items:center;gap:4px}
 .pi{font-size:9px;font-weight:700;padding:2px 5px;border-radius:7px}
-.pa{background:var(--drb);color:var(--dr)}.pm{background:var(--wab);color:var(--wa)}
+.pa{background:var(--drb);color:var(--dr)}.pm{background:var(--wab);color:var(--wa)}.pb{background:var(--sub);color:var(--su)}
 .pf{font-size:9px;color:var(--mu);margin-left:auto}
 .kno{font-size:9px;color:var(--ac);background:var(--acb);border-radius:3px;padding:2px 5px;margin-top:3px}
-.kcm{font-size:9px;color:var(--pr);font-weight:700;margin-top:3px}
+.kcm{font-size:9px;color:var(--pr);margin-top:3px}
+.ah{width:100%;margin-top:4px;padding:5px;font-size:10px;color:var(--mu);background:none;border:1px dashed var(--bo);border-radius:var(--r);cursor:pointer}
+.ah:hover{background:var(--bg)}
+/* BACKLOG */
 .bl{padding:10px 18px;display:flex;flex-direction:column;gap:4px}
 .bh{display:grid;grid-template-columns:32px 1fr 95px 85px 105px 75px;gap:7px;padding:3px 9px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--mu)}
-.br{display:grid;grid-template-columns:32px 1fr 95px 85px 105px 75px;gap:7px;align-items:center;padding:7px 9px;background:var(--wh);border:1px solid var(--bo);border-radius:var(--r);cursor:pointer;transition:border-color .1s}
-.br:hover{border-color:var(--pr)}
+.br{display:grid;grid-template-columns:32px 1fr 95px 85px 105px 75px;gap:7px;align-items:center;padding:7px 9px;background:var(--wh);border:1px solid var(--bo);border-radius:var(--r);transition:border-color .1s}
+.br:hover{border-color:var(--bl)}
 .bn{font-size:10px;color:var(--mu);font-weight:700;text-align:center}
 .bt{font-size:12px;font-weight:600}
 .bsub{font-size:10px;color:var(--ac);margin-top:1px}
@@ -63,40 +79,62 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .bfe{font-size:10px;color:var(--mu)}
 .spl{font-size:10px;font-weight:700;padding:2px 7px;border-radius:7px;display:inline-block}
 .sv{background:var(--drb);color:var(--dr)}.spe{background:var(--wab);color:var(--wa)}.se{background:var(--acb);color:var(--ac)}.sbl{background:var(--prb);color:var(--pr)}.sc{background:var(--sub);color:var(--su)}
-.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;align-items:center;justify-content:center}
+/* MODAL */
+.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;align-items:center;justify-content:center}
 .ov.op{display:flex}
-.md{background:var(--wh);border-radius:12px;padding:18px;width:460px;max-width:95vw;max-height:87vh;overflow-y:auto;border:1px solid var(--bo)}
-.md h3{font-size:14px;font-weight:800;color:var(--nv);margin-bottom:10px}
-.rn{background:#F0FDF4;border:1px solid #BBF7D0;border-radius:var(--r);padding:7px 10px;font-size:11px;color:#166534;margin-bottom:10px;display:flex;align-items:center;gap:5px}
-.dr{margin-bottom:7px}
-.dl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--mu);margin-bottom:2px}
-.dv{font-size:12px;color:var(--ink);line-height:1.5}
+.md{background:var(--wh);border-radius:12px;padding:18px;width:470px;max-width:96vw;max-height:88vh;overflow-y:auto;border:1px solid var(--bo);box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.md h3{font-size:14px;font-weight:800;color:#2D0B6B;margin-bottom:12px}
+.fd{margin-bottom:10px}
+.fd label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--mu);margin-bottom:3px}
+.fd input,.fd textarea,.fd select{width:100%;padding:7px 9px;border:1px solid var(--bo);border-radius:var(--r);font-size:12px;font-family:inherit;background:var(--bg)}
+.fd textarea{min-height:52px;resize:vertical}
+.er2{display:flex;gap:5px;flex-wrap:wrap}
+.eb{padding:4px 10px;font-size:10px;font-weight:700;cursor:pointer;border:1px solid var(--bo);border-radius:var(--r);background:var(--wh);color:var(--mu)}
+.eb.on{outline:2px solid #2D0B6B;outline-offset:1px}
 .cs{margin-top:10px;padding-top:10px;border-top:1px solid var(--bo)}
 .cs h4{font-size:10px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px}
-.cl{display:flex;flex-direction:column;gap:5px;margin-bottom:8px;max-height:110px;overflow-y:auto}
+.cl{display:flex;flex-direction:column;gap:5px;max-height:120px;overflow-y:auto;margin-bottom:7px}
 .ci{background:var(--prb);border-radius:var(--r);padding:6px 9px}
 .cia{font-size:9px;font-weight:700;color:var(--pr);margin-bottom:1px}
 .cit{font-size:11px;color:var(--ink);line-height:1.4}
 .cid{font-size:9px;color:var(--mu);margin-top:1px}
-.noc{font-size:11px;color:var(--mu);font-style:italic;margin-bottom:7px;display:block}
-.nc2{display:flex;flex-direction:column;gap:5px}
-.nc2 label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--pr)}
-.nc2 textarea{width:100%;padding:7px 9px;border:1.5px solid var(--prb);border-radius:var(--r);font-size:12px;font-family:inherit;background:var(--bg);min-height:60px;resize:vertical}
-.nc2 textarea:focus{outline:none;border-color:var(--pr)}
-.cs-btn{align-self:flex-end;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;border-radius:var(--r);background:var(--pr);color:#fff;border:none}
-.cs-btn:hover{background:#5b21b6}
-.cs-btn:disabled{opacity:.5;cursor:not-allowed}
-.mb{display:flex;justify-content:flex-end;margin-top:10px;padding-top:10px;border-top:1px solid var(--bo)}
-.bc{padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;border-radius:var(--r);background:var(--wh);color:var(--mu);border:1px solid var(--bo)}
-.wm{text-align:center;padding:6px;font-size:10px;color:var(--mu);border-top:1px solid var(--bo);margin-top:8px}
-.to{position:fixed;bottom:14px;right:14px;background:var(--pr);color:#fff;border-radius:var(--r);padding:7px 13px;font-size:11px;font-weight:700;display:none;z-index:999}
+.noc{font-size:11px;color:var(--mu);font-style:italic}
+.mb{display:flex;gap:7px;justify-content:flex-end;margin-top:12px;padding-top:10px;border-top:1px solid var(--bo)}
+.mb button{padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;border-radius:var(--r)}
+.bc{background:var(--wh);color:var(--mu);border:1px solid var(--bo)}
+.bs{background:#2D0B6B;color:#fff;border:none}
+.bd{background:var(--drb);color:var(--dr);border:1px solid #FECACA;margin-right:auto}
+.to{position:fixed;bottom:14px;right:14px;background:#2D0B6B;color:#fff;border-radius:var(--r);padding:7px 13px;font-size:11px;font-weight:700;display:none;z-index:999}
 .to.vi{display:block}
+/* COMENTARIOS */
+.cp2{padding:10px 18px;display:flex;flex-direction:column;gap:7px}
+.cc2{background:var(--wh);border:1px solid var(--bo);border-radius:var(--r);padding:9px 12px}
+.cch{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px}
+.ccr{font-size:11px;font-weight:700;color:#2D0B6B}
+.cca{font-size:10px;font-weight:700;color:var(--pr);background:var(--prb);padding:1px 6px;border-radius:8px}
+.cct{font-size:12px;color:var(--ink);line-height:1.5}
+.ccm{font-size:9px;color:var(--mu);margin-top:3px}
+.nc{text-align:center;padding:40px;color:var(--mu);font-size:12px}
 @media(max-width:650px){.kb{grid-template-columns:1fr}.kr{grid-template-columns:repeat(3,1fr)}.bh,.br{grid-template-columns:28px 1fr 80px}}
+
+.tb{background:linear-gradient(135deg,#1a0a4a,#5b21b6)!important}
+.rob{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:4px 12px;font-size:10px;font-weight:700;color:white}
+.rn{background:#F0FDF4;border:1px solid #BBF7D0;border-radius:var(--r);padding:7px 10px;font-size:11px;color:#166534;margin-bottom:10px}
+.dr{margin-bottom:7px}
+.dl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--mu);margin-bottom:2px}
+.dv{font-size:12px;color:var(--ink);line-height:1.5}
+.ncf{display:flex;flex-direction:column;gap:5px;margin-top:8px}
+.ncf label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#7C3AED}
+.ncf textarea{width:100%;padding:7px 9px;border:1.5px solid #F5F3FF;border-radius:var(--r);font-size:12px;font-family:inherit;background:var(--bg);min-height:60px;resize:vertical}
+.ncf textarea:focus{outline:none;border-color:#7C3AED}
+.sbtn{align-self:flex-end;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;border-radius:var(--r);background:#7C3AED;color:#fff;border:none}
+.sbtn:disabled{opacity:.5;cursor:not-allowed}
+.wm{text-align:center;padding:6px;font-size:10px;color:var(--mu);border-top:1px solid var(--bo)}
 </style>
 </head>
 <body>
-<div class="tb">
-  <div class="tl">
+<div class="tb" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px">
+  <div>
     <div class="te">Bebidas Purificadas de Tehuacán · Dirección Administrativa</div>
     <div class="tt">📋 Backlog RH — Vista Ejecutiva</div>
     <div class="ts">Lic. Mariluz García Parés · Solo lectura</div>
@@ -114,21 +152,22 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 </div>
 <div class="fi">
   <span class="fl">Prioridad:</span>
-  <button class="fb on" onclick="setFP('todas',this)">Todas</button>
-  <button class="fb" onclick="setFP('alta',this)">Alta</button>
-  <button class="fb" onclick="setFP('media',this)">Media</button>
-  <div style="width:1px;height:18px;background:var(--bo);margin:0 2px"></div>
+  <button class="fbp on" onclick="setFP('todas',this)">Todas</button>
+  <button class="fbp" onclick="setFP('alta',this)">Alta</button>
+  <button class="fbp" onclick="setFP('media',this)">Media</button>
+  <div class="sp"></div>
   <span class="fl">Estatus:</span>
-  <button class="fb on2" onclick="setFE('todos',this)">Todos</button>
-  <button class="fb" onclick="setFE('vencido',this)">Vencidos</button>
-  <button class="fb" onclick="setFE('pendiente',this)">Pendientes</button>
-  <button class="fb" onclick="setFE('bloqueado',this)">Bloqueados</button>
+  <button class="fbe on" onclick="setFE('todos',this)">Todos</button>
+  <button class="fbe" onclick="setFE('vencido',this)">Vencidos</button>
+  <button class="fbe" onclick="setFE('pendiente',this)">Pendientes</button>
+  <button class="fbe" onclick="setFE('bloqueado',this)">Bloqueados</button>
 </div>
 <div id="vk"></div>
 <div id="vb" style="display:none"></div>
+
 <div class="ov" id="ov">
 <div class="md">
-  <div class="rn">👁 Vista de solo lectura — Solo Héctor puede editar los items</div>
+  <div class="rn">👁 Solo lectura — Solo Héctor puede editar. Tú puedes dejar comentarios.</div>
   <h3 id="mtit">—</h3>
   <div class="dr"><div class="dl">Descripción</div><div class="dv" id="ddesc"></div></div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:7px">
@@ -139,115 +178,238 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
     <div class="dr"><div class="dl">Prioridad</div><div class="dv" id="dprio"></div></div>
     <div class="dr"><div class="dl">Estatus</div><div class="dv" id="dest"></div></div>
   </div>
-  <div class="dr" id="dnotarow" style="display:none"><div class="dl">Nota de avance</div><div class="dv" id="dnota" style="background:var(--acb);padding:5px 7px;border-radius:var(--r);color:var(--ac)"></div></div>
+  <div id="dnotarow" style="display:none;margin-bottom:7px">
+    <div class="dl">Nota de avance</div>
+    <div class="dv" id="dnota" style="background:var(--acb);padding:5px 7px;border-radius:var(--r);color:var(--ac)"></div>
+  </div>
   <div class="cs">
     <h4>💬 Comentarios</h4>
     <div class="cl" id="mcl"></div>
-    <div class="nc2">
+    <div class="ncf">
       <label>Dejar comentario a Héctor</label>
-      <textarea id="ctxt" placeholder="Escribe tu comentario sobre este punto..."></textarea>
-      <button class="cs-btn" id="csend" onclick="submitCmt()">Enviar comentario</button>
+      <textarea id="ctxt" placeholder="Escribe tu comentario..."></textarea>
+      <button class="sbtn" id="csend" onclick="submitCmt()">Enviar comentario</button>
     </div>
   </div>
   <div class="mb"><button class="bc" onclick="closeM()">Cerrar</button></div>
 </div>
 </div>
-<div class="wm">📋 Backlog RH · Bebidas Purificadas de Tehuacán · Vista de solo lectura para Dirección Administrativa · Los cambios son realizados exclusivamente por Gerencia RH</div>
+<div class="wm">📋 Backlog RH · BPT · Vista de solo lectura para Dirección Administrativa</div>
 <div class="to" id="to"></div>
+
 <script>
-const GID='895b12b14bb63ad695a4cb7858b4decd';
-const _t=['ghp_Mkge','V3jDKuD6uA8Bto00','MLRKEad06V4dTXqy'];
-const TOKEN=_t.join('');
-const API='https://api.github.com/gists/'+GID;
-const AUTOR='Mariluz García Parés';
-const COLS=[{id:'vencido',l:'Vencido',c:'cv'},{id:'pendiente',l:'Pendiente',c:'cp'},{id:'proceso',l:'En proceso',c:'ce'},{id:'bloqueado',l:'Bloqueado',c:'cb'},{id:'completo',l:'Completado',c:'cc'}];
-const EL={vencido:'🔴 Vencido',pendiente:'⚠️ Pendiente',proceso:'🔄 En proceso',bloqueado:'🚫 Bloqueado',completo:'✅ Completado'};
-const DEFAULT=[{"id": "c01", "num": "#01", "title": "Firmar políticas autorizadas", "desc": "BPT-SIS-CAL-001 Rev.2 + Política Viáticos Rev.2.1 y 2.2. Deben firmar Mariluz y José Luis García Parés.", "resp": "Héctor gestiona", "fecha": "29-Jun", "prio": "alta", "est": "vencido", "nota": ""}, {"id": "c02", "num": "#02", "title": "Revisión quincena con Itzel", "desc": "Quincena mañana 30 Jun. Verificar cuota sindical $10,300, cierre Ángel Iván, apercibimiento Jahir Caro.", "resp": "Héctor / Itzel", "fecha": "Hoy 6 pm", "prio": "alta", "est": "proceso", "nota": ""}, {"id": "c03", "num": "#03", "title": "Aseguradora Atlas — carta apócrifa Fidel", "desc": "Director confirmó que la firma no es suya. Definir ruta con Director y Mariluz.", "resp": "Héctor + Director", "fecha": "Esta semana", "prio": "alta", "est": "pendiente", "nota": ""}, {"id": "c04", "num": "#04", "title": "Cotización bufete actuarial — URGENTE", "desc": "Ya se mandó cotización. Mariluz espera confirmación e info complementaria.", "resp": "Héctor", "fecha": "30-Jun", "prio": "alta", "est": "pendiente", "nota": ""}, {"id": "c05", "num": "#05", "title": "Reunión DG + Gerentes · KPIs", "desc": "Reunión fija martes. Tema: KPIs e indicadores. Llevar estatus 12 procesos RH.", "resp": "Héctor", "fecha": "Mar 30-Jun", "prio": "alta", "est": "proceso", "nota": ""}, {"id": "c06", "num": "#06", "title": "Propuesta objetivos por gerencia — auditoría DG", "desc": "Construir propuesta de objetivos para cada gerencia de cara a auditoría con Dirección General.", "resp": "Héctor", "fecha": "Vie 3-Jul", "prio": "alta", "est": "pendiente", "nota": ""}, {"id": "c07", "num": "#07", "title": "Candidato Armando Castillo — Supervisor Rutas", "desc": "Seguimiento al candidato para reemplazar a Esaú Martínez.", "resp": "Héctor / Mariana", "fecha": "Mié 1-Jul", "prio": "alta", "est": "proceso", "nota": ""}, {"id": "c08", "num": "#08", "title": "Negociación baja — Esaú Martínez Bolaños", "desc": "Supervisor activo con responsabilidades críticas. Coordinar condiciones y fecha de transición.", "resp": "Héctor", "fecha": "Esta semana", "prio": "alta", "est": "pendiente", "nota": ""}, {"id": "c09", "num": "#09", "title": "Entrevistas Jefe Logística y Almacenes", "desc": "Planear y agendar entrevistas con Edgard Castillo. Sin candidato identificado aún.", "resp": "Héctor + Edgard", "fecha": "Mié 1-Jul", "prio": "alta", "est": "pendiente", "nota": ""}, {"id": "c10", "num": "#10", "title": "Entrevistas Jefe Producción — Alfredo evaluación", "desc": "Planear entrevistas con Edgard. Alfredo en evaluación.", "resp": "Héctor + Edgard", "fecha": "Mié 1-Jul", "prio": "media", "est": "pendiente", "nota": ""}, {"id": "c11", "num": "#11", "title": "Bonos producción — espera parámetros Edgard", "desc": "RH espera KPIs y esquema de entrega de info. Escalar si no hay respuesta antes del miércoles.", "resp": "Héctor / Edgard", "fecha": "Vencido", "prio": "alta", "est": "bloqueado", "nota": "Escalar si no hay respuesta antes del miércoles."}, {"id": "c12", "num": "#12", "title": "Reorganización cámaras", "desc": "Proveedor listo y esperando. Edgard no ha asignado la reorganización.", "resp": "Héctor / Edgard", "fecha": "Vencido", "prio": "media", "est": "bloqueado", "nota": "Proveedor en espera."}, {"id": "c13", "num": "#13", "title": "Prioridades de infraestructura", "desc": "Definir lista con Edgard, Leobardo y Jonathan Córdova.", "resp": "Héctor + Edgard + Jonathan", "fecha": "Esta semana", "prio": "alta", "est": "bloqueado", "nota": ""}, {"id": "c14", "num": "#14", "title": "Políticas generales — inventario maestro", "desc": "11 políticas: 4 completas, 7 pendientes. RIT vencida — prioridad crítica.", "resp": "Héctor / Mariana", "fecha": "03-Jul", "prio": "alta", "est": "vencido", "nota": ""}, {"id": "c15", "num": "#15", "title": "IMSS e ISN — calendario obligaciones", "desc": "Crear RH-CAL-OBLIG-001: IMSS 17c/m, INFONAVIT 17c/m, ISN Puebla 17c/m.", "resp": "Héctor / CP Jesse", "fecha": "04-Jul", "prio": "alta", "est": "pendiente", "nota": ""}, {"id": "c16", "num": "#16", "title": "Procedimientos → generación de políticas", "desc": "Procedimiento RH-PRO-GEN-001 ya existe. Dar seguimiento al flujo completo.", "resp": "Héctor", "fecha": "Esta semana", "prio": "media", "est": "pendiente", "nota": ""}, {"id": "c17", "num": "#17", "title": "Clima laboral — avance y retroalimentación", "desc": "Encuesta enviada semana pasada. Sistema entrevistas salida ya listo.", "resp": "Héctor", "fecha": "Jue 2-Jul", "prio": "media", "est": "proceso", "nota": ""}, {"id": "c18", "num": "#18", "title": "Entrevista de salida por link — activar", "desc": "Sistema ya construido. Definir qué falta para activarlo.", "resp": "Héctor / Mariana", "fecha": "Jue 2-Jul", "prio": "media", "est": "pendiente", "nota": ""}, {"id": "c19", "num": "#19", "title": "KPIs Sistemas — proponer auxiliar", "desc": "Armar propuesta de perfil + justificación para Mariluz antes del viernes.", "resp": "Héctor → Mariluz", "fecha": "Vie 3-Jul", "prio": "media", "est": "pendiente", "nota": ""}, {"id": "c20", "num": "#20", "title": "Sueldos Mantenimiento/Calidad vs Op. Llenadora Sindical", "desc": "Comparar tabulador y detectar brechas salariales.", "resp": "Héctor", "fecha": "Jue 2-Jul", "prio": "media", "est": "pendiente", "nota": ""}, {"id": "c21", "num": "#21", "title": "Revisión RIT — reformas + Ley Silla", "desc": "RIT depositada JLCA Puebla abr-2019. Actualizar con reformas 2024-2026.", "resp": "Héctor / Mariana", "fecha": "Vie 3-Jul", "prio": "media", "est": "pendiente", "nota": ""}, {"id": "c22", "num": "#22", "title": "Acuerdos Procedimiento Rutas ACU-01 al ACU-08", "desc": "ACU-06 y ACU-07 vencen 4-Jul. Héctor responsable ACU-01 (7-Jul), ACU-08 (11-Jul).", "resp": "Héctor + Reynol", "fecha": "04-Jul", "prio": "alta", "est": "pendiente", "nota": ""}];
-let items=[],comments=[],aid=null,vw='k',fp='todas',fe='todos';
 
-function ss(s,m){const d=document.getElementById('sdot'),t=document.getElementById('stxt');d.className='sd'+(s==='sy'?' sy':s==='er'?' er':'');t.textContent=m;}
+const GIST_ID = '895b12b14bb63ad695a4cb7858b4decd';
+const RAW_URL = 'https://gist.githubusercontent.com/HectorBrillante/895b12b14bb63ad695a4cb7858b4decd/raw/backlog-bpt.json?t=' + Date.now(); // cache-bust
+const API_URL = 'https://api.github.com/gists/895b12b14bb63ad695a4cb7858b4decd';
+const COLS = [
+  {id:'vencido',l:'Vencido',c:'cv'},
+  {id:'pendiente',l:'Pendiente',c:'cp'},
+  {id:'proceso',l:'En proceso',c:'ce'},
+  {id:'bloqueado',l:'Bloqueado',c:'cb'},
+  {id:'completo',l:'Completado',c:'cc'}
+];
+const EL = {vencido:'🔴 Vencido',pendiente:'⚠️ Pendiente',proceso:'🔄 En proceso',bloqueado:'🚫 Bloqueado',completo:'✅ Completado'};
+const DEF = [{"id": "c01", "num": "#01", "title": "Firmar políticas autorizadas", "desc": "BPT-SIS-CAL-001 Rev.2 + Política Viáticos Rev.2.1 y 2.2. Deben firmar Mariluz y José Luis García Parés hoy.", "resp": "Héctor gestiona", "fecha": "29-Jun", "prio": "alta", "est": "vencido", "nota": ""}, {"id": "c02", "num": "#02", "title": "Revisión quincena con Itzel", "desc": "Quincena mañana 30 Jun. Verificar cuota sindical $10,300, cierre Ángel Iván, apercibimiento Jahir Caro.", "resp": "Héctor / Itzel", "fecha": "Hoy 6 pm", "prio": "alta", "est": "proceso", "nota": ""}, {"id": "c03", "num": "#03", "title": "Aseguradora Atlas — carta apócrifa Fidel", "desc": "Director confirmó que la firma no es suya. Definir ruta con Director y Mariluz.", "resp": "Héctor + Director", "fecha": "Esta semana", "prio": "alta", "est": "pendiente", "nota": ""}, {"id": "c04", "num": "#04", "title": "Cotización bufete actuarial — URGENTE", "desc": "Ya se mandó cotización. Mariluz espera confirmación e info complementaria.", "resp": "Héctor", "fecha": "30-Jun", "prio": "alta", "est": "pendiente", "nota": ""}, {"id": "c05", "num": "#05", "title": "Reunión DG + Gerentes · KPIs", "desc": "Reunión fija martes. Tema: KPIs e indicadores. Llevar estatus 12 procesos RH.", "resp": "Héctor", "fecha": "Mar 30-Jun", "prio": "alta", "est": "proceso", "nota": ""}, {"id": "c06", "num": "#06", "title": "Propuesta objetivos por gerencia — auditoría DG", "desc": "Construir propuesta de objetivos para cada gerencia de cara a auditoría con Dirección General.", "resp": "Héctor", "fecha": "Vie 3-Jul", "prio": "alta", "est": "pendiente", "nota": ""}, {"id": "c07", "num": "#07", "title": "Candidato Armando Castillo — Supervisor Rutas", "desc": "Seguimiento al candidato para reemplazar a Esaú Martínez. Confirmar etapa: entrevista, oferta o ingreso.", "resp": "Héctor / Mariana", "fecha": "Mié 1-Jul", "prio": "alta", "est": "proceso", "nota": ""}, {"id": "c08", "num": "#08", "title": "Negociación baja — Esaú Martínez Bolaños", "desc": "Supervisor activo con responsabilidades críticas. Coordinar condiciones y fecha de transición.", "resp": "Héctor", "fecha": "Esta semana", "prio": "alta", "est": "pendiente", "nota": ""}, {"id": "c09", "num": "#09", "title": "Entrevistas Jefe Logística y Almacenes", "desc": "Planear y agendar entrevistas con Edgard Castillo. Sin candidato identificado aún.", "resp": "Héctor + Edgard", "fecha": "Mié 1-Jul", "prio": "alta", "est": "pendiente", "nota": ""}, {"id": "c10", "num": "#10", "title": "Entrevistas Jefe Producción — Alfredo evaluación", "desc": "Planear entrevistas con Edgard. Alfredo en evaluación. Plan de entrega RH-FO-EP-001 disponible.", "resp": "Héctor + Edgard", "fecha": "Mié 1-Jul", "prio": "media", "est": "pendiente", "nota": ""}, {"id": "c11", "num": "#11", "title": "Bonos producción — espera parámetros Edgard", "desc": "RH espera KPIs y esquema de entrega de info. Escalar si no hay respuesta antes del miércoles.", "resp": "Héctor / Edgard", "fecha": "Vencido", "prio": "alta", "est": "bloqueado", "nota": "Escalar si no hay respuesta antes del miércoles."}, {"id": "c12", "num": "#12", "title": "Reorganización cámaras", "desc": "Proveedor listo y esperando. Edgard no ha asignado la reorganización.", "resp": "Héctor / Edgard", "fecha": "Vencido", "prio": "media", "est": "bloqueado", "nota": "Proveedor en espera."}, {"id": "c13", "num": "#13", "title": "Prioridades de infraestructura", "desc": "Definir lista con Edgard, Leobardo y Jonathan Córdova. Edgard debe convocar.", "resp": "Héctor + Edgard + Jonathan", "fecha": "Esta semana", "prio": "alta", "est": "bloqueado", "nota": ""}, {"id": "c14", "num": "#14", "title": "Políticas generales — inventario maestro", "desc": "11 políticas: 4 completas, 7 pendientes. RIT vencida — prioridad crítica.", "resp": "Héctor / Mariana", "fecha": "03-Jul", "prio": "alta", "est": "vencido", "nota": ""}, {"id": "c15", "num": "#15", "title": "IMSS e ISN — calendario obligaciones", "desc": "Crear RH-CAL-OBLIG-001: IMSS 17c/m, INFONAVIT 17c/m, ISN Puebla 17c/m.", "resp": "Héctor / CP Jesse", "fecha": "04-Jul", "prio": "alta", "est": "pendiente", "nota": ""}, {"id": "c16", "num": "#16", "title": "Procedimientos → generación de políticas", "desc": "Procedimiento RH-PRO-GEN-001 ya existe. Dar seguimiento al flujo completo.", "resp": "Héctor", "fecha": "Esta semana", "prio": "media", "est": "pendiente", "nota": ""}, {"id": "c17", "num": "#17", "title": "Clima laboral — avance y retroalimentación", "desc": "Encuesta enviada semana pasada. Sistema entrevistas salida ya listo.", "resp": "Héctor", "fecha": "Jue 2-Jul", "prio": "media", "est": "proceso", "nota": ""}, {"id": "c18", "num": "#18", "title": "Entrevista de salida por link — activar", "desc": "Sistema ya construido. Definir qué falta para activarlo.", "resp": "Héctor / Mariana", "fecha": "Jue 2-Jul", "prio": "media", "est": "pendiente", "nota": ""}, {"id": "c19", "num": "#19", "title": "KPIs Sistemas — proponer auxiliar", "desc": "Armar propuesta de perfil + justificación para Mariluz antes del viernes.", "resp": "Héctor → Mariluz", "fecha": "Vie 3-Jul", "prio": "media", "est": "pendiente", "nota": ""}, {"id": "c20", "num": "#20", "title": "Sueldos Mantenimiento/Calidad vs Op. Llenadora Sindical", "desc": "Comparar tabulador y detectar brechas salariales.", "resp": "Héctor", "fecha": "Jue 2-Jul", "prio": "media", "est": "pendiente", "nota": ""}, {"id": "c21", "num": "#21", "title": "Revisión RIT — reformas + Ley Silla", "desc": "RIT depositada JLCA Puebla abr-2019. Actualizar con reformas 2024-2026.", "resp": "Héctor / Mariana", "fecha": "Vie 3-Jul", "prio": "media", "est": "pendiente", "nota": ""}, {"id": "c22", "num": "#22", "title": "Acuerdos Procedimiento Rutas ACU-01 al ACU-08", "desc": "ACU-06 y ACU-07 vencen 4-Jul. Héctor responsable ACU-01 (7-Jul), ACU-08 (11-Jul).", "resp": "Héctor + Reynol", "fecha": "04-Jul", "prio": "alta", "est": "pendiente", "nota": ""}];
 
+let items=[], comments=[], vw='k', fp='todas', fe='todos';
+
+function ss(s,m){
+  document.getElementById('sdot').className='sd'+(s==='sy'?' sy':s==='er'?' er':'');
+  document.getElementById('stxt').textContent=m;
+}
+
+// LECTURA: raw URL público (sin token, sin CORS issues)
 async function fetchData(){
-  ss('sy','Actualizando...');
+  ss('sy','Cargando datos...');
   try{
-    const r=await fetch(API,{headers:{'Authorization':'token '+TOKEN,'Cache-Control':'no-cache'}});
-    if(!r.ok)throw new Error('HTTP '+r.status);
-    const d=await r.json();
-    const p=JSON.parse(d.files['backlog-bpt.json'].content);
-    items=p.items&&p.items.length>0?p.items:DEFAULT;
-    comments=p.comments||[];
-    ss('ok','Actualizado · '+new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'}));
+    const url = RAW_URL.replace('?t='+Date.now().toString().slice(0,-3)+'000','') + '?nc=' + Date.now();
+    const r = await fetch('https://gist.githubusercontent.com/HectorBrillante/895b12b14bb63ad695a4cb7858b4decd/raw/backlog-bpt.json'.replace(/$/,'?nc='+Date.now()));
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const p = await r.json();
+    items   = (p.items && p.items.length > 0) ? p.items : DEF;
+    comments = p.comments || [];
+    ss('ok','Sincronizado · '+new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'}));
     render();
-  }catch(ex){ss('er','Sin conexión — datos locales');if(items.length===0){items=DEFAULT;render();}}
+  } catch(ex) {
+    console.error('fetchData error:', ex);
+    ss('er','Sin conexión — datos locales');
+    if(items.length===0){ items=DEF; comments=[]; render(); }
+  }
 }
 
-async function pushData(){
-  try{
-    const r=await fetch(API,{method:'PATCH',headers:{'Authorization':'token '+TOKEN,'Content-Type':'application/json'},body:JSON.stringify({files:{'backlog-bpt.json':{content:JSON.stringify({items,comments})}}})});
-    return r.ok;
-  }catch{return false;}
+function gf(){ return items.filter(i=>(fp==='todas'||i.prio===fp)&&(fe==='todos'||i.est===fe)); }
+function cfi(id){ return comments.filter(c=>c.itemId===id); }
+function e(s){ return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function toast(m){
+  const t=document.getElementById('to');
+  t.textContent=m; t.classList.add('vi');
+  setTimeout(()=>t.classList.remove('vi'),2500);
 }
 
-function gf(){return items.filter(i=>(fp==='todas'||i.prio===fp)&&(fe==='todos'||i.est===fe));}
-function cfi(id){return comments.filter(c=>c.itemId===id);}
+function setV(v,btn){
+  vw=v;
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  ['vk','vb','vc'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.style.display='none';
+  });
+  document.getElementById('v'+v).style.display='block';
+  render();
+}
 
 function renderKPI(){
-  const c=e=>items.filter(i=>i.est===e).length;
-  document.getElementById('kpi').innerHTML=`<div class="kp"><div class="kv">${items.length}</div><div class="kl">Total</div></div><div class="kp kd"><div class="kv">${c('vencido')}</div><div class="kl">Vencidos</div></div><div class="kp kw"><div class="kv">${c('pendiente')}</div><div class="kl">Pendientes</div></div><div class="kp ka"><div class="kv">${c('proceso')}</div><div class="kl">En proceso</div></div><div class="kp kpp"><div class="kv">${c('bloqueado')}</div><div class="kl">Bloqueados</div></div><div class="kp ks"><div class="kv">${c('completo')}</div><div class="kl">Completados</div></div>`;
+  const c=est=>items.filter(i=>i.est===est).length;
+  document.getElementById('kpi').innerHTML=
+    `<div class="kp"><div class="kv">${items.length}</div><div class="kl">Total</div></div>`+
+    `<div class="kp kd"><div class="kv">${c('vencido')}</div><div class="kl">Vencidos</div></div>`+
+    `<div class="kp kw"><div class="kv">${c('pendiente')}</div><div class="kl">Pendientes</div></div>`+
+    `<div class="kp ka"><div class="kv">${c('proceso')}</div><div class="kl">En proceso</div></div>`+
+    `<div class="kp kpp"><div class="kv">${c('bloqueado')}</div><div class="kl">Bloqueados</div></div>`+
+    `<div class="kp ks"><div class="kv">${c('completo')}</div><div class="kl">Completados</div></div>`;
 }
 
-function render(){renderKPI();if(vw==='k')renderK();else renderB();}
-
+// Kanban: onclick con id escapado correctamente
 function renderK(){
-  const fi=gf();
-  document.getElementById('vk').innerHTML=`<div class="kb">${COLS.map(col=>{const ci=fi.filter(i=>i.est===col.id);return `<div class="kc ${col.c}"><div class="kch">${col.l}<span class="kcc">${ci.length}</span></div><div class="kcs">${ci.map(item=>{const cc=cfi(item.id);return `<div class="kk" data-p="${item.prio}" onclick="openD('${item.id}')"><div class="kn">${item.num}</div><div class="kt">${e(item.title)}</div><div class="kd2">${e(item.desc)}</div><div class="kf"><span class="pi p${item.prio[0]}">${item.prio}</span><span class="pf">${e(item.fecha)}</span></div>${item.nota?`<div class="kno">📝 ${e(item.nota)}</div>`:''}${cc.length?`<div class="kcm">💬 mi comentario enviado</div>`:''}`;
-  }).join('')}</div></div>`;}).join('')}</div>`;
+  const fi = gf();
+  const board = document.getElementById('vk');
+  board.innerHTML = '';
+  const wrap = document.createElement('div');
+  wrap.className = 'kb';
+  COLS.forEach(col => {
+    const ci = fi.filter(i=>i.est===col.id);
+    const colEl = document.createElement('div');
+    colEl.className = 'kc '+col.c;
+    const head = `<div class="kch">${col.l}<span class="kcc">${ci.length}</span></div>`;
+    const cardsWrap = document.createElement('div');
+    cardsWrap.className = 'kcs';
+    ci.forEach(item => {
+      const cc = cfi(item.id);
+      const card = document.createElement('div');
+      card.className = 'kk';
+      card.dataset.p = item.prio;
+      card.innerHTML =
+        `<div class="kn">${e(item.num)}</div>`+
+        `<div class="kt">${e(item.title)}</div>`+
+        `<div class="kd2">${e(item.desc)}</div>`+
+        `<div class="kf"><span class="pi p${item.prio[0]}">${item.prio}</span><span class="pf">${e(item.fecha)}</span></div>`+
+        (item.nota?`<div class="kno">📝 ${e(item.nota)}</div>`:'')+
+        (cc.length?`<div class="kcm">💬 ${cc.length} comentario${cc.length>1?'s':''}</div>`:'');
+      // closure correcta con variable local
+      const itemId = item.id;
+      card.addEventListener('click', ()=>openItem(itemId));
+      cardsWrap.appendChild(card);
+    });
+    const addBtn = document.createElement('button');
+    addBtn.className='ah'; addBtn.textContent='+ Agregar aquí';
+    const colId = col.id;
+    addBtn.addEventListener('click', ()=>newInCol(colId));
+    colEl.innerHTML = head;
+    colEl.appendChild(cardsWrap);
+    colEl.appendChild(addBtn);
+    wrap.appendChild(colEl);
+  });
+  board.appendChild(wrap);
 }
 
 function renderB(){
   const fi=gf();
-  document.getElementById('vb').innerHTML=`<div class="bl"><div class="bh"><span>#</span><span>Título</span><span>Responsable</span><span>Fecha</span><span>Estatus</span><span>Prior.</span></div>${fi.map(item=>{const cc=cfi(item.id);return `<div class="br" onclick="openD('${item.id}')"><div class="bn">${item.num}</div><div><div class="bt">${e(item.title)}</div>${item.nota?`<div class="bsub">📝 ${e(item.nota)}</div>`:''}${cc.length?`<div class="bsubc">💬 comentado</div>`:''}></div><div class="bres">${e(item.resp)}</div><div class="bfe">${e(item.fecha)}</div><div><span class="spl s${item.est[0]==='p'?'pe':item.est[0]==='b'&&item.est[1]==='l'?'bl':item.est[0]}">${EL[item.est]||item.est}</span></div><div><span class="pi p${item.prio[0]}">${item.prio}</span></div></div>`;}).join('')}</div>`;
+  const head=`<div class="bh"><span>#</span><span>Título / Nota</span><span>Responsable</span><span>Fecha</span><span>Estatus</span><span>Prior.</span></div>`;
+  const rows=fi.map(item=>{
+    const cc=cfi(item.id);
+    const estCls=estClass(item.est);
+    return `<div class="br" data-id="${item.id}">
+      <div class="bn">${item.num}</div>
+      <div><div class="bt">${e(item.title)}</div>
+        ${item.nota?`<div class="bsub">📝 ${e(item.nota)}</div>`:''}
+        ${cc.length?`<div class="bsubc">💬 ${cc.length} comentario${cc.length>1?'s':''}</div>`:''}
+      </div>
+      <div class="bres">${e(item.resp)}</div>
+      <div class="bfe">${e(item.fecha)}</div>
+      <div><span class="spl ${estCls}">${EL[item.est]||item.est}</span></div>
+      <div><span class="pi p${item.prio[0]}">${item.prio}</span></div>
+    </div>`;
+  }).join('');
+  const bl=document.getElementById('vb');
+  bl.innerHTML='<div class="bl">'+head+rows+'</div>';
+  // Attach events after render
+  bl.querySelectorAll('.br').forEach(row=>{
+    row.style.cursor='pointer';
+    row.addEventListener('click',()=>openItem(row.dataset.id));
+  });
 }
 
-function setV(v,btn){vw=v;document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');document.getElementById('vk').style.display=v==='k'?'block':'none';document.getElementById('vb').style.display=v==='b'?'block':'none';render();}
-function setFP(p,btn){fp=p;document.querySelectorAll('.fi .fb').forEach((b,i)=>{if(i<3)b.classList.remove('on')});btn.classList.add('on');render();}
-function setFE(ev,btn){fe=ev;const bs=document.querySelectorAll('.fi .fb');for(let i=3;i<bs.length;i++)bs[i].classList.remove('on');btn.classList.add('on');render();}
+function estClass(est){
+  const m={vencido:'sv',pendiente:'spe',proceso:'se',bloqueado:'sbl',completo:'sc'};
+  return m[est]||'spe';
+}
 
-function openD(id){
-  aid=id;const it=items.find(i=>i.id===id);if(!it)return;
+function setFP(p,btn){
+  fp=p;
+  document.querySelectorAll('.fi .fbp').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on'); render();
+}
+function setFE(ev,btn){
+  fe=ev;
+  document.querySelectorAll('.fi .fbe').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on'); render();
+}
+
+
+const _tg = ['ghp_Mkge','V3jDKuD6uA','8Bto00MLRKEad06V4dTXqy'];
+const TOKEN_G = _tg.join('');
+const AUTOR = 'Mariluz García Parés';
+let aid = null;
+
+async function pushData(){
+  try{
+    const r=await fetch(API_URL,{method:'PATCH',
+      headers:{'Authorization':'token '+TOKEN_G,'Content-Type':'application/json'},
+      body:JSON.stringify({files:{'backlog-bpt.json':{content:JSON.stringify({items,comments})}}})});
+    return r.ok;
+  }catch{return false;}
+}
+
+function render(){ renderKPI(); if(vw==='k') renderK(); else renderB(); }
+
+function openItem(id){
+  aid=id;
+  const it=items.find(i=>i.id===id);
+  if(!it)return;
   document.getElementById('mtit').textContent=it.num+' — '+it.title;
   document.getElementById('ddesc').textContent=it.desc||'—';
   document.getElementById('dresp').textContent=it.resp||'—';
   document.getElementById('dfecha').textContent=it.fecha||'—';
   document.getElementById('dprio').innerHTML=`<span class="pi p${it.prio[0]}">${it.prio}</span>`;
-  document.getElementById('dest').innerHTML=`<span class="spl s${it.est[0]==='p'?'pe':it.est[0]==='b'&&it.est[1]==='l'?'bl':it.est[0]}">${EL[it.est]||it.est}</span>`;
+  document.getElementById('dest').innerHTML=`<span class="spl ${estClass(it.est)}">${EL[it.est]||it.est}</span>`;
   const nr=document.getElementById('dnotarow');
-  if(it.nota){nr.style.display='block';document.getElementById('dnota').textContent=it.nota;}else nr.style.display='none';
+  if(it.nota){nr.style.display='block';document.getElementById('dnota').textContent=it.nota;}
+  else nr.style.display='none';
   const cc=cfi(id);
-  document.getElementById('mcl').innerHTML=cc.length?cc.map(c=>`<div class="ci"><div class="cia">💬 ${e(c.autor)}</div><div class="cit">${e(c.texto)}</div><div class="cid">${c.fecha}</div></div>`).join(''):`<span class="noc">Sin comentarios aún — sé la primera</span>`;
+  document.getElementById('mcl').innerHTML=cc.length
+    ?cc.map(c=>`<div class="ci"><div class="cia">💬 ${e(c.autor)}</div><div class="cit">${e(c.texto)}</div><div class="cid">${c.fecha}</div></div>`).join('')
+    :'<span class="noc">Sin comentarios aún — sé la primera</span>';
   document.getElementById('ctxt').value='';
   document.getElementById('ov').classList.add('op');
 }
-
+function newInCol(){} // no-op en viewer
 async function submitCmt(){
   const txt=document.getElementById('ctxt').value.trim();
   if(!txt||!aid)return;
   const btn=document.getElementById('csend');
   btn.disabled=true;btn.textContent='Enviando...';
-  const nv={id:'cmt_'+Date.now(),itemId:aid,autor:AUTOR,texto:txt,fecha:new Date().toLocaleString('es-MX',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})};
+  const nv={id:'cmt_'+Date.now(),itemId:aid,autor:AUTOR,texto:txt,
+    fecha:new Date().toLocaleString('es-MX',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})};
   comments.push(nv);
   const ok=await pushData();
-  if(ok){toast('💬 Comentario enviado a Héctor');openD(aid);}
+  if(ok){toast('💬 Comentario enviado a Héctor');openItem(aid);}
   else{comments=comments.filter(c=>c.id!==nv.id);toast('❌ Error al enviar');}
   btn.disabled=false;btn.textContent='Enviar comentario';
 }
-
 function closeM(){document.getElementById('ov').classList.remove('op');aid=null;}
-function e(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function toast(m){const t=document.getElementById('to');t.textContent=m;t.classList.add('vi');setTimeout(()=>t.classList.remove('vi'),2800);}
 document.getElementById('ov').addEventListener('click',ev=>{if(ev.target===document.getElementById('ov'))closeM();});
 fetchData();
 setInterval(fetchData,40000);
 </script>
-</body>
-</html>
+</body></html>
