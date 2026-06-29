@@ -114,6 +114,10 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .cct{font-size:12px;color:var(--ink);line-height:1.5}
 .ccm{font-size:9px;color:var(--mu);margin-top:3px}
 .nc{text-align:center;padding:40px;color:var(--mu);font-size:12px}
+.auto-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;margin-top:4px}
+.auto-vencido{background:var(--drb);color:var(--dr)}
+.auto-ok{background:var(--sub);color:var(--su)}
+.lock-note{font-size:9px;color:var(--mu);font-style:italic;margin-top:3px}
 @media(max-width:650px){.kb{grid-template-columns:1fr}.kr{grid-template-columns:repeat(3,1fr)}.bh,.br{grid-template-columns:28px 1fr 80px}}
 </style>
 </head>
@@ -167,7 +171,10 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
   <div class="fd"><label>Título</label><input id="ft" placeholder="Título del item"></div>
   <div class="fd"><label>Descripción</label><textarea id="fd2"></textarea></div>
   <div class="fd"><label>Responsable</label><input id="fr"></div>
-  <div class="fd"><label>Fecha compromiso</label><input id="ff"></div>
+  <div class="fd"><label>Fecha compromiso</label>
+    <input type="date" id="ffiso" onchange="onDateChange()" style="font-family:inherit">
+    <div id="ffpreview" style="font-size:10px;color:var(--mu);margin-top:4px"></div>
+  </div>
   <div class="fd"><label>Prioridad</label>
     <select id="fp2"><option value="alta">Alta</option><option value="media">Media</option><option value="baja">Baja</option></select>
   </div>
@@ -226,6 +233,16 @@ async function fetchData(){
     const p = await r.json();
     items   = (p.items && p.items.length > 0) ? p.items : DEF;
     comments = p.comments || [];
+    // Recalcular vencidos automáticamente al cargar (por si pasó la fecha desde la última visita)
+    const hoy = new Date(); hoy.setHours(0,0,0,0);
+    items.forEach(it=>{
+      if(it.fechaISO && it.est!=='completo' && it.est!=='bloqueado'){
+        const [y,m,d]=it.fechaISO.split('-').map(Number);
+        const fi=new Date(y,m-1,d);
+        if(fi<hoy && it.est!=='vencido') it.est='vencido';
+        else if(fi>=hoy && it.est==='vencido') it.est='pendiente';
+      }
+    });
     ss('ok','Sincronizado · '+new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'}));
     render();
   } catch(ex) {
@@ -405,7 +422,8 @@ function openItem(id){
   document.getElementById('ft').value=it.title;
   document.getElementById('fd2').value=it.desc;
   document.getElementById('fr').value=it.resp;
-  document.getElementById('ff').value=it.fecha;
+  document.getElementById('ffiso').value=it.fechaISO||'';
+  updateDatePreview(it.fechaISO);
   document.getElementById('fp2').value=it.prio;
   document.getElementById('fn').value=it.nota||'';
   est=it.est;
@@ -421,7 +439,9 @@ function openNew(){ newInCol('pendiente'); }
 function newInCol(colId){
   eid=null; est=colId;
   document.getElementById('mtit').textContent='Nuevo item';
-  ['ft','fd2','fr','ff','fn'].forEach(id=>document.getElementById(id).value='');
+  ['ft','fd2','fr','fn'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('ffiso').value='';
+  document.getElementById('ffpreview').innerHTML='';
   document.getElementById('fp2').value='media';
   document.getElementById('bdel').style.display='none';
   document.querySelectorAll('.eb').forEach(b=>b.classList.toggle('on',b.dataset.e===est));
@@ -431,23 +451,76 @@ function newInCol(colId){
 function closeM(){ document.getElementById('ov').classList.remove('op'); eid=null; }
 function selE(btn){ est=btn.dataset.e; document.querySelectorAll('.eb').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); }
 
+function calcAutoEstatus(fechaISO, estManual){
+  if(!fechaISO) return estManual;
+  // Completado y Bloqueado son estados manuales que el usuario controla — no se autoajustan por fecha
+  if(estManual==='completo' || estManual==='bloqueado') return estManual;
+  const hoy = new Date(); hoy.setHours(0,0,0,0);
+  const [y,m,d] = fechaISO.split('-').map(Number);
+  const fechaItem = new Date(y, m-1, d);
+  if(fechaItem < hoy) return 'vencido';
+  // Si ya no está vencida y el estatus actual era 'vencido', regresa a pendiente
+  if(estManual==='vencido') return 'pendiente';
+  return estManual;
+}
+
+function updateDatePreview(fechaISO){
+  const prev = document.getElementById('ffpreview');
+  if(!fechaISO){ prev.innerHTML=''; return; }
+  const hoy = new Date(); hoy.setHours(0,0,0,0);
+  const [y,m,d] = fechaISO.split('-').map(Number);
+  const fechaItem = new Date(y, m-1, d);
+  const meses=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const legible = `${String(d).padStart(2,'0')}-${meses[m-1]}-${y}`;
+  if(est==='completo' || est==='bloqueado'){
+    prev.innerHTML = `<span class="auto-badge auto-ok">📅 ${legible}</span><div class="lock-note">Estatus "${EL[est]}" no se ajusta automáticamente por fecha</div>`;
+    return;
+  }
+  if(fechaItem < hoy){
+    const dias = Math.round((hoy-fechaItem)/86400000);
+    prev.innerHTML = `<span class="auto-badge auto-vencido">🔴 Vencido hace ${dias} día${dias>1?'s':''} — se marcará automático</span>`;
+  } else if(fechaItem.getTime()===hoy.getTime()){
+    prev.innerHTML = `<span class="auto-badge auto-ok">📅 ${legible} — vence HOY</span>`;
+  } else {
+    prev.innerHTML = `<span class="auto-badge auto-ok">📅 ${legible}</span>`;
+  }
+}
+
+function onDateChange(){
+  const fechaISO = document.getElementById('ffiso').value;
+  updateDatePreview(fechaISO);
+  const nuevoEst = calcAutoEstatus(fechaISO, est);
+  if(nuevoEst !== est){
+    est = nuevoEst;
+    document.querySelectorAll('.eb').forEach(b=>b.classList.toggle('on', b.dataset.e===est));
+  }
+}
+
 function saveI(){
   const t=document.getElementById('ft').value.trim();
   if(!t)return;
+  const fechaISO = document.getElementById('ffiso').value;
+  const fechaLegible = fechaISO ? isoToLegible(fechaISO) : '';
+  const estFinal = calcAutoEstatus(fechaISO, est);
   if(eid){
     const ix=items.findIndex(i=>i.id===eid);
     items[ix]={...items[ix],title:t,desc:document.getElementById('fd2').value.trim(),
-      resp:document.getElementById('fr').value.trim(),fecha:document.getElementById('ff').value.trim(),
-      prio:document.getElementById('fp2').value,est,nota:document.getElementById('fn').value.trim()};
+      resp:document.getElementById('fr').value.trim(),fecha:fechaLegible,fechaISO,
+      prio:document.getElementById('fp2').value,est:estFinal,nota:document.getElementById('fn').value.trim()};
   }else{
     const n=items.reduce((m,i)=>Math.max(m,parseInt(i.num?.replace('#','')||0)),0)+1;
     items.push({id:'c'+n+'_'+Date.now(),num:'#'+String(n).padStart(2,'0'),title:t,
       desc:document.getElementById('fd2').value.trim(),resp:document.getElementById('fr').value.trim(),
-      fecha:document.getElementById('ff').value.trim(),prio:document.getElementById('fp2').value,est,
+      fecha:fechaLegible,fechaISO,prio:document.getElementById('fp2').value,est:estFinal,
       nota:document.getElementById('fn').value.trim()});
   }
   closeM();
   pushData().then(()=>render());
+}
+function isoToLegible(fechaISO){
+  const [y,m,d] = fechaISO.split('-').map(Number);
+  const meses=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  return `${String(d).padStart(2,'0')}-${meses[m-1]}-${y}`;
 }
 function delI(){
   if(!eid||!confirm('¿Eliminar este item?'))return;
