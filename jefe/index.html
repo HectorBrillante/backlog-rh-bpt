@@ -383,7 +383,7 @@ async function pushData(){
     const r=await fetch(API_URL,{
       method:'PATCH',
       headers:{'Authorization':'token '+TOKEN_W,'Content-Type':'application/json'},
-      body:JSON.stringify({files:{'backlog-bpt.json':{content:JSON.stringify({items,comments})}}}),
+      body:JSON.stringify({files:{'backlog-bpt-jefe.json':{content:JSON.stringify({items,comments})}}}),
     });
     if(!r.ok) throw new Error('HTTP '+r.status);
     ss('ok','Guardado · '+new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'}));
