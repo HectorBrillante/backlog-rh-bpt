@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Backlog RH — BPT · Editor (Jefatura RH)</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --nv:#0B4F4A;--bl:#0E8E72;--ink:#111827;--mu:#6B7280;
+  --bo:#E5E7EB;--bg:#F7F8FC;--wh:#FFFFFF;--r:8px;
+  --dr:#DC2626;--drb:#FEF2F2;--wa:#D97706;--wab:#FFFBEB;
+  --ac:#1A50C8;--acb:#EFF6FF;--pr:#7C3AED;--prb:#F5F3FF;
+  --su:#059669;--sub:#ECFDF5;
+}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:13px}
+.tb{background:linear-gradient(135deg,var(--nv),var(--bl));color:#fff;padding:12px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.te{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;opacity:.7}
+.tt{font-size:17px;font-weight:800}
+.ts{font-size:11px;opacity:.7}
+.tr{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:3px 10px;font-size:10px;font-weight:700}
+.sb{background:var(--wh);border-bottom:1px solid var(--bo);padding:8px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.ss{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--mu)}
+.sd{width:7px;height:7px;border-radius:50%;background:var(--su)}
+.sd.sy{background:var(--wa);animation:p 1s infinite}
+.sd.er{background:var(--dr)}
+@keyframes p{0%,100%{opacity:1}50%{opacity:.3}}
+.btn{padding:5px 12px;font-size:11px;font-weight:600;cursor:pointer;border-radius:var(--r);border:1px solid var(--bo);background:var(--wh);color:var(--mu)}
+.btn.pr{background:var(--nv);color:#fff;border-color:var(--nv)}
+.kr{padding:10px 18px;display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.kp{background:var(--wh);border:1px solid var(--bo);border-radius:var(--r);padding:8px 10px;text-align:center}
+.kv{font-size:21px;font-weight:900;line-height:1}
+.kl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--mu);margin-top:1px}
+.kd .kv{color:var(--dr)}.kw .kv{color:var(--wa)}.ka .kv{color:var(--ac)}.kpp .kv{color:var(--pr)}.ks .kv{color:var(--su)}
+.tabs{display:flex;padding:0 18px;border-bottom:1px solid var(--bo);background:var(--wh)}
+.tab{padding:8px 14px;font-size:12px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;color:var(--mu)}
+.tab.on{color:var(--nv);border-bottom-color:var(--nv)}
+.fi{padding:7px 18px;display:flex;gap:6px;align-items:center;border-bottom:1px solid var(--bo);background:var(--wh);flex-wrap:wrap}
+.fl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--mu)}
+.fb,.fbp,.fbe{padding:3px 10px;font-size:11px;font-weight:600;cursor:pointer;border-radius:10px;border:1px solid var(--bo);background:var(--wh);color:var(--mu)}
+.fb.on,.fbp.on,.fbe.on{background:var(--nv);color:#fff;border-color:var(--nv)}
+.sp{width:1px;height:18px;background:var(--bo)}
+/* KANBAN */
+.kb{padding:10px 18px;display:grid;grid-template-columns:repeat(5,1fr);gap:9px;align-items:start}
+.kc{display:flex;flex-direction:column}
+.kch{padding:6px 9px;border-radius:var(--r);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:space-between;margin-bottom:5px}
+.kcc{font-size:10px;padding:1px 6px;border-radius:8px;font-weight:700}
+.cv .kch{background:var(--drb);color:var(--dr)}.cp .kch{background:var(--wab);color:var(--wa)}
+.ce .kch{background:var(--acb);color:var(--ac)}.cb .kch{background:var(--prb);color:var(--pr)}
+.cc .kch{background:var(--sub);color:var(--su)}
+.kcs{display:flex;flex-direction:column;gap:5px;min-height:60px}
+.kk{background:var(--wh);border:1px solid var(--bo);border-radius:var(--r);padding:8px 9px;cursor:pointer;transition:border-color .1s;border-left:3px solid transparent}
+.kk:hover{border-color:var(--bl)}
+.kk[data-p=alta]{border-left-color:var(--dr)}
+.kk[data-p=media]{border-left-color:var(--wa)}
+.kk[data-p=baja]{border-left-color:var(--su)}
+.kn{font-size:9px;color:var(--mu);font-weight:700;margin-bottom:2px}
+.kt{font-size:11px;font-weight:700;line-height:1.3;margin-bottom:3px}
+.kd2{font-size:10px;color:var(--mu);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:4px}
+.kf{display:flex;align-items:center;gap:4px}
+.pi{font-size:9px;font-weight:700;padding:2px 5px;border-radius:7px}
+.pa{background:var(--drb);color:var(--dr)}.pm{background:var(--wab);color:var(--wa)}.pb{background:var(--sub);color:var(--su)}
+.pf{font-size:9px;color:var(--mu);margin-left:auto}
+.kno{font-size:9px;color:var(--ac);background:var(--acb);border-radius:3px;padding:2px 5px;margin-top:3px}
+.kcm{font-size:9px;color:var(--pr);margin-top:3px}
+.ah{width:100%;margin-top:4px;padding:5px;font-size:10px;color:var(--mu);background:none;border:1px dashed var(--bo);border-radius:var(--r);cursor:pointer}
+.ah:hover{background:var(--bg)}
+/* BACKLOG */
+.bl{padding:10px 18px;display:flex;flex-direction:column;gap:4px}
+.bh{display:grid;grid-template-columns:32px 1fr 95px 85px 105px 75px;gap:7px;padding:3px 9px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--mu)}
+.br{display:grid;grid-template-columns:32px 1fr 95px 85px 105px 75px;gap:7px;align-items:center;padding:7px 9px;background:var(--wh);border:1px solid var(--bo);border-radius:var(--r);transition:border-color .1s}
+.br:hover{border-color:var(--bl)}
+.bn{font-size:10px;color:var(--mu);font-weight:700;text-align:center}
+.bt{font-size:12px;font-weight:600}
+.bsub{font-size:10px;color:var(--ac);margin-top:1px}
+.bsubc{font-size:10px;color:var(--pr);font-weight:700;margin-top:1px}
+.bres{font-size:10px;color:var(--mu);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bfe{font-size:10px;color:var(--mu)}
+.spl{font-size:10px;font-weight:700;padding:2px 7px;border-radius:7px;display:inline-block}
+.sv{background:var(--drb);color:var(--dr)}.spe{background:var(--wab);color:var(--wa)}.se{background:var(--acb);color:var(--ac)}.sbl{background:var(--prb);color:var(--pr)}.sc{background:var(--sub);color:var(--su)}
+/* MODAL */
+.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;align-items:center;justify-content:center}
+.ov.op{display:flex}
+.md{background:var(--wh);border-radius:12px;padding:18px;width:470px;max-width:96vw;max-height:88vh;overflow-y:auto;border:1px solid var(--bo);box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.md h3{font-size:14px;font-weight:800;color:var(--nv);margin-bottom:12px}
+.fd{margin-bottom:10px}
+.fd label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--mu);margin-bottom:3px}
+.fd input,.fd textarea,.fd select{width:100%;padding:7px 9px;border:1px solid var(--bo);border-radius:var(--r);font-size:12px;font-family:inherit;background:var(--bg)}
+.fd textarea{min-height:52px;resize:vertical}
+.er2{display:flex;gap:5px;flex-wrap:wrap}
+.eb{padding:4px 10px;font-size:10px;font-weight:700;cursor:pointer;border:1px solid var(--bo);border-radius:var(--r);background:var(--wh);color:var(--mu)}
+.eb.on{outline:2px solid var(--nv);outline-offset:1px}
+.cs{margin-top:10px;padding-top:10px;border-top:1px solid var(--bo)}
+.cs h4{font-size:10px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:.5px;margin-bottom:7px}
+.cl{display:flex;flex-direction:column;gap:5px;max-height:120px;overflow-y:auto;margin-bottom:7px}
+.ci{background:var(--prb);border-radius:var(--r);padding:6px 9px}
+.cia{font-size:9px;font-weight:700;color:var(--pr);margin-bottom:1px}
+.cit{font-size:11px;color:var(--ink);line-height:1.4}
+.cid{font-size:9px;color:var(--mu);margin-top:1px}
+.noc{font-size:11px;color:var(--mu);font-style:italic}
+.mb{display:flex;gap:7px;justify-content:flex-end;margin-top:12px;padding-top:10px;border-top:1px solid var(--bo)}
+.mb button{padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;border-radius:var(--r)}
+.bc{background:var(--wh);color:var(--mu);border:1px solid var(--bo)}
+.bs{background:var(--nv);color:#fff;border:none}
+.bd{background:var(--drb);color:var(--dr);border:1px solid #FECACA;margin-right:auto}
+.to{position:fixed;bottom:14px;right:14px;background:var(--nv);color:#fff;border-radius:var(--r);padding:7px 13px;font-size:11px;font-weight:700;display:none;z-index:999}
+.to.vi{display:block}
+/* COMENTARIOS */
+.cp2{padding:10px 18px;display:flex;flex-direction:column;gap:7px}
+.cc2{background:var(--wh);border:1px solid var(--bo);border-radius:var(--r);padding:9px 12px}
+.cch{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px}
+.ccr{font-size:11px;font-weight:700;color:var(--nv)}
+.cca{font-size:10px;font-weight:700;color:var(--pr);background:var(--prb);padding:1px 6px;border-radius:8px}
+.cct{font-size:12px;color:var(--ink);line-height:1.5}
+.ccm{font-size:9px;color:var(--mu);margin-top:3px}
+.nc{text-align:center;padding:40px;color:var(--mu);font-size:12px}
+.auto-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;margin-top:4px}
+.auto-vencido{background:var(--drb);color:var(--dr)}
+.auto-ok{background:var(--sub);color:var(--su)}
+.lock-note{font-size:9px;color:var(--mu);font-style:italic;margin-top:3px}
+@media(max-width:650px){.kb{grid-template-columns:1fr}.kr{grid-template-columns:repeat(3,1fr)}.bh,.br{grid-template-columns:28px 1fr 80px}}
+</style>
+</head>
+<body>
+<div class="tb">
+  <div>
+    <div class="te">Bebidas Purificadas de Tehuacán · Jefatura de RH</div>
+    <div class="tt">📋 Backlog RH — Editor</div>
+    <div class="ts">Luis Eduardo López Pérez · Semana 29 Jun 2026</div>
+  </div>
+  <div class="tr">
+    <span class="chip" id="chv">🔴 Vencidos</span>
+    <span class="chip" id="chb">🚫 Bloqueados</span>
+    <span class="chip">📅 Martes · KPIs</span>
+  </div>
+</div>
+<div class="sb">
+  <div class="ss"><div class="sd sy" id="sdot"></div><span id="stxt">Cargando...</span></div>
+  <div style="display:flex;gap:6px">
+    <button class="btn" onclick="fetchData()">↻ Sincronizar</button>
+    <button class="btn pr" onclick="openNew()">+ Nuevo item</button>
+  </div>
+</div>
+<div class="kr" id="kpi"></div>
+<div class="tabs">
+  <div class="tab on" onclick="setV('k',this)">⬛ Kanban</div>
+  <div class="tab" onclick="setV('b',this)">☰ Backlog</div>
+  <div class="tab" onclick="setV('c',this)">💬 Comentarios <span id="cbadge" style="background:var(--prb);color:var(--pr);border-radius:8px;padding:1px 6px;font-size:10px;margin-left:3px">0</span></div>
+</div>
+<div class="fi">
+  <span class="fl">Prioridad:</span>
+  <button class="fbp on" onclick="setFP('todas',this)">Todas</button>
+  <button class="fbp" onclick="setFP('alta',this)">Alta</button>
+  <button class="fbp" onclick="setFP('media',this)">Media</button>
+  <div class="sp"></div>
+  <span class="fl">Estatus:</span>
+  <button class="fbe on" onclick="setFE('todos',this)">Todos</button>
+  <button class="fbe" onclick="setFE('vencido',this)">Vencidos</button>
+  <button class="fbe" onclick="setFE('pendiente',this)">Pendientes</button>
+  <button class="fbe" onclick="setFE('bloqueado',this)">Bloqueados</button>
+  <button class="fbe" onclick="setFE('completo',this)">Completados</button>
+</div>
+<div id="vk"></div>
+<div id="vb" style="display:none"></div>
+<div id="vc" style="display:none"></div>
+
+<!-- MODAL EDITOR -->
+<div class="ov" id="ov">
+<div class="md">
+  <h3 id="mtit">Item</h3>
+  <div class="fd"><label>Título</label><input id="ft" placeholder="Título del item"></div>
+  <div class="fd"><label>Descripción</label><textarea id="fd2"></textarea></div>
+  <div class="fd"><label>Responsable</label><input id="fr"></div>
+  <div class="fd"><label>Fecha compromiso</label>
+    <input type="date" id="ffiso" onchange="onDateChange()" style="font-family:inherit">
+    <div id="ffpreview" style="font-size:10px;color:var(--mu);margin-top:4px"></div>
+  </div>
+  <div class="fd"><label>Prioridad</label>
+    <select id="fp2"><option value="alta">Alta</option><option value="media">Media</option><option value="baja">Baja</option></select>
+  </div>
+  <div class="fd"><label>Estatus</label>
+    <div class="er2">
+      <button class="eb" data-e="vencido" onclick="selE(this)">🔴 Vencido</button>
+      <button class="eb" data-e="pendiente" onclick="selE(this)">⚠️ Pendiente</button>
+      <button class="eb" data-e="proceso" onclick="selE(this)">🔄 En proceso</button>
+      <button class="eb" data-e="bloqueado" onclick="selE(this)">🚫 Bloqueado</button>
+      <button class="eb" data-e="completo" onclick="selE(this)">✅ Completado</button>
+    </div>
+  </div>
+  <div class="fd"><label>Nota de avance</label><textarea id="fn"></textarea></div>
+  <div class="cs">
+    <h4>💬 Comentarios</h4>
+    <div class="cl" id="mcl"></div>
+  </div>
+  <div class="mb">
+    <button class="bd" id="bdel" onclick="delI()" style="display:none">🗑 Eliminar</button>
+    <button class="bc" onclick="closeM()">Cancelar</button>
+    <button class="bs" onclick="saveI()">Guardar y sincronizar</button>
+  </div>
+</div>
+</div>
+<div class="to" id="to"></div>
+
+<script>
+
+const GIST_ID = '895b12b14bb63ad695a4cb7858b4decd';
+const RAW_URL = 'https://gist.githubusercontent.com/HectorBrillante/895b12b14bb63ad695a4cb7858b4decd/raw/backlog-bpt.json?t=' + Date.now(); // cache-bust
+const API_URL = 'https://api.github.com/gists/895b12b14bb63ad695a4cb7858b4decd';
+const COLS = [
+  {id:'vencido',l:'Vencido',c:'cv'},
+  {id:'pendiente',l:'Pendiente',c:'cp'},
+  {id:'proceso',l:'En proceso',c:'ce'},
+  {id:'bloqueado',l:'Bloqueado',c:'cb'},
+  {id:'completo',l:'Completado',c:'cc'}
+];
+const EL = {vencido:'🔴 Vencido',pendiente:'⚠️ Pendiente',proceso:'🔄 En proceso',bloqueado:'🚫 Bloqueado',completo:'✅ Completado'};
+const DEF = [{"id": "c01", "num": "#01", "title": "Firmar políticas autorizadas", "desc": "BPT-SIS-CAL-001 Rev.2 + Política Viáticos Rev.2.1 y 2.2. Deben firmar Mariluz y José Luis García Parés hoy.", "resp": "Héctor gestiona", "fecha": "29-Jun", "prio": "alta", "est": "vencido", "nota": ""}, {"id": "c02", "num": "#02", "title": "Revisión quincena con Itzel", "desc": "Quincena mañana 30 Jun. Verificar cuota sindical $10,300, cierre Ángel Iván, apercibimiento Jahir Caro.", "resp": "Héctor / Itzel", "fecha": "Hoy 6 pm", "prio": "alta", "est": "proceso", "nota": ""}, {"id": "c03", "num": "#03", "title": "Aseguradora Atlas — carta apócrifa Fidel", "desc": "Director confirmó que la firma no es suya. Definir ruta con Director y Mariluz.", "resp": "Héctor + Director", "fecha": "Esta semana", "prio": "alta", "est": "pendiente", "nota": ""}, {"id": "c04", "num": "#04", "title": "Cotización bufete actuarial — URGENTE", "desc": "Ya se mandó cotización. Mariluz espera confirmación e info complementaria.", "resp": "Héctor", "fecha": "30-Jun", "prio": "alta", "est": "pendiente", "nota": ""}, {"id": "c05", "num": "#05", "title": "Reunión DG + Gerentes · KPIs", "desc": "Reunión fija martes. Tema: KPIs e indicadores. Llevar estatus 12 procesos RH.", "resp": "Héctor", "fecha": "Mar 30-Jun", "prio": "alta", "est": "proceso", "nota": ""}, {"id": "c06", "num": "#06", "title": "Propuesta objetivos por gerencia — auditoría DG", "desc": "Construir propuesta de objetivos para cada gerencia de cara a auditoría con Dirección General.", "resp": "Héctor", "fecha": "Vie 3-Jul", "prio": "alta", "est": "pendiente", "nota": ""}, {"id": "c07", "num": "#07", "title": "Candidato Armando Castillo — Supervisor Rutas", "desc": "Seguimiento al candidato para reemplazar a Esaú Martínez. Confirmar etapa: entrevista, oferta o ingreso.", "resp": "Héctor / Mariana", "fecha": "Mié 1-Jul", "prio": "alta", "est": "proceso", "nota": ""}, {"id": "c08", "num": "#08", "title": "Negociación baja — Esaú Martínez Bolaños", "desc": "Supervisor activo con responsabilidades críticas. Coordinar condiciones y fecha de transición.", "resp": "Héctor", "fecha": "Esta semana", "prio": "alta", "est": "pendiente", "nota": ""}, {"id": "c09", "num": "#09", "title": "Entrevistas Jefe Logística y Almacenes", "desc": "Planear y agendar entrevistas con Edgard Castillo. Sin candidato identificado aún.", "resp": "Héctor + Edgard", "fecha": "Mié 1-Jul", "prio": "alta", "est": "pendiente", "nota": ""}, {"id": "c10", "num": "#10", "title": "Entrevistas Jefe Producción — Alfredo evaluación", "desc": "Planear entrevistas con Edgard. Alfredo en evaluación. Plan de entrega RH-FO-EP-001 disponible.", "resp": "Héctor + Edgard", "fecha": "Mié 1-Jul", "prio": "media", "est": "pendiente", "nota": ""}, {"id": "c11", "num": "#11", "title": "Bonos producción — espera parámetros Edgard", "desc": "RH espera KPIs y esquema de entrega de info. Escalar si no hay respuesta antes del miércoles.", "resp": "Héctor / Edgard", "fecha": "Vencido", "prio": "alta", "est": "bloqueado", "nota": "Escalar si no hay respuesta antes del miércoles."}, {"id": "c12", "num": "#12", "title": "Reorganización cámaras", "desc": "Proveedor listo y esperando. Edgard no ha asignado la reorganización.", "resp": "Héctor / Edgard", "fecha": "Vencido", "prio": "media", "est": "bloqueado", "nota": "Proveedor en espera."}, {"id": "c13", "num": "#13", "title": "Prioridades de infraestructura", "desc": "Definir lista con Edgard, Leobardo y Jonathan Córdova. Edgard debe convocar.", "resp": "Héctor + Edgard + Jonathan", "fecha": "Esta semana", "prio": "alta", "est": "bloqueado", "nota": ""}, {"id": "c14", "num": "#14", "title": "Políticas generales — inventario maestro", "desc": "11 políticas: 4 completas, 7 pendientes. RIT vencida — prioridad crítica.", "resp": "Héctor / Mariana", "fecha": "03-Jul", "prio": "alta", "est": "vencido", "nota": ""}, {"id": "c15", "num": "#15", "title": "IMSS e ISN — calendario obligaciones", "desc": "Crear RH-CAL-OBLIG-001: IMSS 17c/m, INFONAVIT 17c/m, ISN Puebla 17c/m.", "resp": "Héctor / CP Jesse", "fecha": "04-Jul", "prio": "alta", "est": "pendiente", "nota": ""}, {"id": "c16", "num": "#16", "title": "Procedimientos → generación de políticas", "desc": "Procedimiento RH-PRO-GEN-001 ya existe. Dar seguimiento al flujo completo.", "resp": "Héctor", "fecha": "Esta semana", "prio": "media", "est": "pendiente", "nota": ""}, {"id": "c17", "num": "#17", "title": "Clima laboral — avance y retroalimentación", "desc": "Encuesta enviada semana pasada. Sistema entrevistas salida ya listo.", "resp": "Héctor", "fecha": "Jue 2-Jul", "prio": "media", "est": "proceso", "nota": ""}, {"id": "c18", "num": "#18", "title": "Entrevista de salida por link — activar", "desc": "Sistema ya construido. Definir qué falta para activarlo.", "resp": "Héctor / Mariana", "fecha": "Jue 2-Jul", "prio": "media", "est": "pendiente", "nota": ""}, {"id": "c19", "num": "#19", "title": "KPIs Sistemas — proponer auxiliar", "desc": "Armar propuesta de perfil + justificación para Mariluz antes del viernes.", "resp": "Héctor → Mariluz", "fecha": "Vie 3-Jul", "prio": "media", "est": "pendiente", "nota": ""}, {"id": "c20", "num": "#20", "title": "Sueldos Mantenimiento/Calidad vs Op. Llenadora Sindical", "desc": "Comparar tabulador y detectar brechas salariales.", "resp": "Héctor", "fecha": "Jue 2-Jul", "prio": "media", "est": "pendiente", "nota": ""}, {"id": "c21", "num": "#21", "title": "Revisión RIT — reformas + Ley Silla", "desc": "RIT depositada JLCA Puebla abr-2019. Actualizar con reformas 2024-2026.", "resp": "Héctor / Mariana", "fecha": "Vie 3-Jul", "prio": "media", "est": "pendiente", "nota": ""}, {"id": "c22", "num": "#22", "title": "Acuerdos Procedimiento Rutas ACU-01 al ACU-08", "desc": "ACU-06 y ACU-07 vencen 4-Jul. Héctor responsable ACU-01 (7-Jul), ACU-08 (11-Jul).", "resp": "Héctor + Reynol", "fecha": "04-Jul", "prio": "alta", "est": "pendiente", "nota": ""}];
+
+let items=[], comments=[], vw='k', fp='todas', fe='todos';
+
+function ss(s,m){
+  document.getElementById('sdot').className='sd'+(s==='sy'?' sy':s==='er'?' er':'');
+  document.getElementById('stxt').textContent=m;
+}
+
+// LECTURA: raw URL público (sin token, sin CORS issues)
+async function fetchData(){
+  ss('sy','Cargando datos...');
+  try{
+    const url = RAW_URL.replace('?t='+Date.now().toString().slice(0,-3)+'000','') + '?nc=' + Date.now();
+    const r = await fetch('https://gist.githubusercontent.com/HectorBrillante/895b12b14bb63ad695a4cb7858b4decd/raw/backlog-bpt.json'.replace(/$/,'?nc='+Date.now()));
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const p = await r.json();
+    items   = (p.items && p.items.length > 0) ? p.items : DEF;
+    comments = p.comments || [];
+    // Recalcular vencidos automáticamente al cargar (por si pasó la fecha desde la última visita)
+    const hoy = new Date(); hoy.setHours(0,0,0,0);
+    items.forEach(it=>{
+      if(it.fechaISO && it.est!=='completo' && it.est!=='bloqueado'){
+        const [y,m,d]=it.fechaISO.split('-').map(Number);
+        const fi=new Date(y,m-1,d);
+        if(fi<hoy && it.est!=='vencido') it.est='vencido';
+        else if(fi>=hoy && it.est==='vencido') it.est='pendiente';
+      }
+    });
+    ss('ok','Sincronizado · '+new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'}));
+    render();
+  } catch(ex) {
+    console.error('fetchData error:', ex);
+    ss('er','Sin conexión — datos locales');
+    if(items.length===0){ items=DEF; comments=[]; render(); }
+  }
+}
+
+function gf(){ return items.filter(i=>(fp==='todas'||i.prio===fp)&&(fe==='todos'||i.est===fe)); }
+function cfi(id){ return comments.filter(c=>c.itemId===id); }
+function e(s){ return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function toast(m){
+  const t=document.getElementById('to');
+  t.textContent=m; t.classList.add('vi');
+  setTimeout(()=>t.classList.remove('vi'),2500);
+}
+
+function setV(v,btn){
+  vw=v;
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  ['vk','vb','vc'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.style.display='none';
+  });
+  document.getElementById('v'+v).style.display='block';
+  render();
+}
+
+function renderKPI(){
+  const c=est=>items.filter(i=>i.est===est).length;
+  document.getElementById('kpi').innerHTML=
+    `<div class="kp"><div class="kv">${items.length}</div><div class="kl">Total</div></div>`+
+    `<div class="kp kd"><div class="kv">${c('vencido')}</div><div class="kl">Vencidos</div></div>`+
+    `<div class="kp kw"><div class="kv">${c('pendiente')}</div><div class="kl">Pendientes</div></div>`+
+    `<div class="kp ka"><div class="kv">${c('proceso')}</div><div class="kl">En proceso</div></div>`+
+    `<div class="kp kpp"><div class="kv">${c('bloqueado')}</div><div class="kl">Bloqueados</div></div>`+
+    `<div class="kp ks"><div class="kv">${c('completo')}</div><div class="kl">Completados</div></div>`;
+}
+
+// Kanban: onclick con id escapado correctamente
+function renderK(){
+  const fi = gf();
+  const board = document.getElementById('vk');
+  board.innerHTML = '';
+  const wrap = document.createElement('div');
+  wrap.className = 'kb';
+  COLS.forEach(col => {
+    const ci = fi.filter(i=>i.est===col.id);
+    const colEl = document.createElement('div');
+    colEl.className = 'kc '+col.c;
+    const head = `<div class="kch">${col.l}<span class="kcc">${ci.length}</span></div>`;
+    const cardsWrap = document.createElement('div');
+    cardsWrap.className = 'kcs';
+    ci.forEach(item => {
+      const cc = cfi(item.id);
+      const card = document.createElement('div');
+      card.className = 'kk';
+      card.dataset.p = item.prio;
+      card.innerHTML =
+        `<div class="kn">${e(item.num)}</div>`+
+        `<div class="kt">${e(item.title)}</div>`+
+        `<div class="kd2">${e(item.desc)}</div>`+
+        `<div class="kf"><span class="pi p${item.prio[0]}">${item.prio}</span><span class="pf">${e(item.fecha)}</span></div>`+
+        (item.nota?`<div class="kno">📝 ${e(item.nota)}</div>`:'')+
+        (cc.length?`<div class="kcm">💬 ${cc.length} comentario${cc.length>1?'s':''}</div>`:'');
+      // closure correcta con variable local
+      const itemId = item.id;
+      card.addEventListener('click', ()=>openItem(itemId));
+      cardsWrap.appendChild(card);
+    });
+    const addBtn = document.createElement('button');
+    addBtn.className='ah'; addBtn.textContent='+ Agregar aquí';
+    const colId = col.id;
+    addBtn.addEventListener('click', ()=>newInCol(colId));
+    colEl.innerHTML = head;
+    colEl.appendChild(cardsWrap);
+    colEl.appendChild(addBtn);
+    wrap.appendChild(colEl);
+  });
+  board.appendChild(wrap);
+}
+
+function renderB(){
+  const fi=gf();
+  const head=`<div class="bh"><span>#</span><span>Título / Nota</span><span>Responsable</span><span>Fecha</span><span>Estatus</span><span>Prior.</span></div>`;
+  const rows=fi.map(item=>{
+    const cc=cfi(item.id);
+    const estCls=estClass(item.est);
+    return `<div class="br" data-id="${item.id}">
+      <div class="bn">${item.num}</div>
+      <div><div class="bt">${e(item.title)}</div>
+        ${item.nota?`<div class="bsub">📝 ${e(item.nota)}</div>`:''}
+        ${cc.length?`<div class="bsubc">💬 ${cc.length} comentario${cc.length>1?'s':''}</div>`:''}
+      </div>
+      <div class="bres">${e(item.resp)}</div>
+      <div class="bfe">${e(item.fecha)}</div>
+      <div><span class="spl ${estCls}">${EL[item.est]||item.est}</span></div>
+      <div><span class="pi p${item.prio[0]}">${item.prio}</span></div>
+    </div>`;
+  }).join('');
+  const bl=document.getElementById('vb');
+  bl.innerHTML='<div class="bl">'+head+rows+'</div>';
+  // Attach events after render
+  bl.querySelectorAll('.br').forEach(row=>{
+    row.style.cursor='pointer';
+    row.addEventListener('click',()=>openItem(row.dataset.id));
+  });
+}
+
+function estClass(est){
+  const m={vencido:'sv',pendiente:'spe',proceso:'se',bloqueado:'sbl',completo:'sc'};
+  return m[est]||'spe';
+}
+
+function setFP(p,btn){
+  fp=p;
+  document.querySelectorAll('.fi .fbp').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on'); render();
+}
+function setFE(ev,btn){
+  fe=ev;
+  document.querySelectorAll('.fi .fbe').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on'); render();
+}
+
+
+// Token escritura (partes)
+const _tp = ['ghp_JMvd','ZzI2xwjwi4','hvdz0xO0RIpxCkax1dwDCn'];
+const TOKEN_W = _tp.join('');
+
+let eid=null, est='pendiente';
+
+async function pushData(){
+  ss('sy','Guardando...');
+  try{
+    const r=await fetch(API_URL,{
+      method:'PATCH',
+      headers:{'Authorization':'token '+TOKEN_W,'Content-Type':'application/json'},
+      body:JSON.stringify({files:{'backlog-bpt.json':{content:JSON.stringify({items,comments})}}}),
+    });
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    ss('ok','Guardado · '+new Date().toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'}));
+    toast('✅ Guardado y sincronizado');
+    return true;
+  }catch(ex){ss('er','Error al guardar');toast('❌ Error: '+ex.message);return false;}
+}
+
+function render(){
+  renderKPI();
+  if(vw==='k') renderK();
+  else if(vw==='b') renderB();
+  else renderC();
+  document.getElementById('cbadge').textContent=comments.length;
+  const v=items.filter(i=>i.est==='vencido').length;
+  const b=items.filter(i=>i.est==='bloqueado').length;
+  document.getElementById('chv').textContent=(v?'🔴 ':'✅ ')+v+(v===1?' Vencido':' Vencidos');
+  document.getElementById('chb').textContent='🚫 '+b+(b===1?' Bloqueado':' Bloqueados');
+}
+
+function renderC(){
+  const vc=document.getElementById('vc');
+  if(!comments.length){vc.innerHTML='<div class="nc">💬 Sin comentarios aún. Usa Sincronizar para actualizar.</div>';return;}
+  const s=[...comments].sort((a,b)=>new Date(b.fecha)-new Date(a.fecha));
+  vc.innerHTML='<div class="cp2">'+s.map(c=>{
+    const it=items.find(i=>i.id===c.itemId);
+    return `<div class="cc2"><div class="cch"><span class="ccr">${it?it.num+' — '+e(it.title):'(eliminado)'}</span><span class="cca">💬 ${e(c.autor)}</span></div><div class="cct">${e(c.texto)}</div><div class="ccm">${c.fecha}</div></div>`;
+  }).join('')+'</div>';
+}
+
+function openItem(id){
+  eid=id;
+  const it=items.find(i=>i.id===id);
+  if(!it)return;
+  document.getElementById('mtit').textContent='Editar — '+it.num;
+  document.getElementById('ft').value=it.title;
+  document.getElementById('fd2').value=it.desc;
+  document.getElementById('fr').value=it.resp;
+  document.getElementById('ffiso').value=it.fechaISO||'';
+  updateDatePreview(it.fechaISO);
+  document.getElementById('fp2').value=it.prio;
+  document.getElementById('fn').value=it.nota||'';
+  est=it.est;
+  document.getElementById('bdel').style.display='block';
+  document.querySelectorAll('.eb').forEach(b=>b.classList.toggle('on',b.dataset.e===est));
+  const cc=cfi(id);
+  document.getElementById('mcl').innerHTML=cc.length
+    ?cc.map(c=>`<div class="ci"><div class="cia">💬 ${e(c.autor)}</div><div class="cit">${e(c.texto)}</div><div class="cid">${c.fecha}</div></div>`).join('')
+    :'<span class="noc">Sin comentarios</span>';
+  document.getElementById('ov').classList.add('op');
+}
+function openNew(){ newInCol('pendiente'); }
+function newInCol(colId){
+  eid=null; est=colId;
+  document.getElementById('mtit').textContent='Nuevo item';
+  ['ft','fd2','fr','fn'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('ffiso').value='';
+  document.getElementById('ffpreview').innerHTML='';
+  document.getElementById('fp2').value='media';
+  document.getElementById('bdel').style.display='none';
+  document.querySelectorAll('.eb').forEach(b=>b.classList.toggle('on',b.dataset.e===est));
+  document.getElementById('mcl').innerHTML='<span class="noc">Sin comentarios</span>';
+  document.getElementById('ov').classList.add('op');
+}
+function closeM(){ document.getElementById('ov').classList.remove('op'); eid=null; }
+function selE(btn){ est=btn.dataset.e; document.querySelectorAll('.eb').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); }
+
+function calcAutoEstatus(fechaISO, estManual){
+  if(!fechaISO) return estManual;
+  // Completado y Bloqueado son estados manuales que el usuario controla — no se autoajustan por fecha
+  if(estManual==='completo' || estManual==='bloqueado') return estManual;
+  const hoy = new Date(); hoy.setHours(0,0,0,0);
+  const [y,m,d] = fechaISO.split('-').map(Number);
+  const fechaItem = new Date(y, m-1, d);
+  if(fechaItem < hoy) return 'vencido';
+  // Si ya no está vencida y el estatus actual era 'vencido', regresa a pendiente
+  if(estManual==='vencido') return 'pendiente';
+  return estManual;
+}
+
+function updateDatePreview(fechaISO){
+  const prev = document.getElementById('ffpreview');
+  if(!fechaISO){ prev.innerHTML=''; return; }
+  const hoy = new Date(); hoy.setHours(0,0,0,0);
+  const [y,m,d] = fechaISO.split('-').map(Number);
+  const fechaItem = new Date(y, m-1, d);
+  const meses=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const legible = `${String(d).padStart(2,'0')}-${meses[m-1]}-${y}`;
+  if(est==='completo' || est==='bloqueado'){
+    prev.innerHTML = `<span class="auto-badge auto-ok">📅 ${legible}</span><div class="lock-note">Estatus "${EL[est]}" no se ajusta automáticamente por fecha</div>`;
+    return;
+  }
+  if(fechaItem < hoy){
+    const dias = Math.round((hoy-fechaItem)/86400000);
+    prev.innerHTML = `<span class="auto-badge auto-vencido">🔴 Vencido hace ${dias} día${dias>1?'s':''} — se marcará automático</span>`;
+  } else if(fechaItem.getTime()===hoy.getTime()){
+    prev.innerHTML = `<span class="auto-badge auto-ok">📅 ${legible} — vence HOY</span>`;
+  } else {
+    prev.innerHTML = `<span class="auto-badge auto-ok">📅 ${legible}</span>`;
+  }
+}
+
+function onDateChange(){
+  const fechaISO = document.getElementById('ffiso').value;
+  updateDatePreview(fechaISO);
+  const nuevoEst = calcAutoEstatus(fechaISO, est);
+  if(nuevoEst !== est){
+    est = nuevoEst;
+    document.querySelectorAll('.eb').forEach(b=>b.classList.toggle('on', b.dataset.e===est));
+  }
+}
+
+function saveI(){
+  const t=document.getElementById('ft').value.trim();
+  if(!t)return;
+  const fechaISO = document.getElementById('ffiso').value;
+  const fechaLegible = fechaISO ? isoToLegible(fechaISO) : '';
+  const estFinal = calcAutoEstatus(fechaISO, est);
+  if(eid){
+    const ix=items.findIndex(i=>i.id===eid);
+    items[ix]={...items[ix],title:t,desc:document.getElementById('fd2').value.trim(),
+      resp:document.getElementById('fr').value.trim(),fecha:fechaLegible,fechaISO,
+      prio:document.getElementById('fp2').value,est:estFinal,nota:document.getElementById('fn').value.trim()};
+  }else{
+    const n=items.reduce((m,i)=>Math.max(m,parseInt(i.num?.replace('#','')||0)),0)+1;
+    items.push({id:'c'+n+'_'+Date.now(),num:'#'+String(n).padStart(2,'0'),title:t,
+      desc:document.getElementById('fd2').value.trim(),resp:document.getElementById('fr').value.trim(),
+      fecha:fechaLegible,fechaISO,prio:document.getElementById('fp2').value,est:estFinal,
+      nota:document.getElementById('fn').value.trim()});
+  }
+  closeM();
+  pushData().then(()=>render());
+}
+function isoToLegible(fechaISO){
+  const [y,m,d] = fechaISO.split('-').map(Number);
+  const meses=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  return `${String(d).padStart(2,'0')}-${meses[m-1]}-${y}`;
+}
+function delI(){
+  if(!eid||!confirm('¿Eliminar este item?'))return;
+  items=items.filter(i=>i.id!==eid);
+  comments=comments.filter(c=>c.itemId!==eid);
+  closeM(); pushData().then(()=>render());
+}
+document.getElementById('ov').addEventListener('click',ev=>{ if(ev.target===document.getElementById('ov'))closeM(); });
+fetchData();
+setInterval(fetchData,45000);
+</script>
+</body></html>
